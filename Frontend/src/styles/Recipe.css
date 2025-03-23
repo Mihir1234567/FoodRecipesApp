@@ -1,0 +1,12 @@
+/* Custom CSS additions */
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.transition-all {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}

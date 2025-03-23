@@ -1,0 +1,40 @@
+/* HomePage.css */
+
+/* Transition effect on the title */
+.homepage-title {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.homepage-title:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Subtitle custom styling */
+.homepage-subtitle {
+  font-style: italic;
+}
+
+/* Additional custom container styling if needed */
+.container {
+  animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Recipe card custom hover effect (if RecipeList renders cards) */
+.recipe-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

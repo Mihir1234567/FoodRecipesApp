@@ -1,0 +1,29 @@
+/* NavBar.css */
+.nav-custom {
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.nav-custom:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.active-nav {
+  background-color: #0d6efd !important;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.btn-logout {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.05);
+}

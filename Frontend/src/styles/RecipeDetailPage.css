@@ -1,0 +1,57 @@
+/* RecipeDetailPage.css */
+
+/* Fade-in animation for the entire detail page */
+.recipe-detail-page {
+  animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Recipe Title Transition */
+.recipe-title {
+  transition: transform 0.3s ease-in-out;
+}
+
+.recipe-title:hover {
+  transform: scale(1.02);
+}
+
+/* Recipe Cover Image Styling */
+.recipe-cover-container {
+  transition: box-shadow 0.3s ease;
+}
+
+.recipe-cover-container:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-cover-image {
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* Recipe Instructions */
+.recipe-instructions {
+  line-height: 1.6;
+}
+
+/* Action Button Hover Effects (if additional customizations desired) */
+.btn-primary,
+.btn-danger {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-danger:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

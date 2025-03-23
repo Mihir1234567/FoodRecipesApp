@@ -1,0 +1,30 @@
+/* RecipeCard.css */
+
+/* Card Hover Effects */
+.recipe-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure the image fills the container neatly with rounded top corners */
+.recipe-card-img {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* Custom Button Hover (Optional) */
+.recipe-card-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.recipe-card-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
