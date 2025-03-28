@@ -17,6 +17,7 @@ function AppRoutes() {
   return (
     <>
       {!hideNavBarPaths.includes(location.pathname) && <NavBar />}
+      <br />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginForm />} />
