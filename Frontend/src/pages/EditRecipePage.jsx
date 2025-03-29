@@ -4,8 +4,9 @@ import { fetchRecipeById, updateRecipe } from "../api/recipeAPI";
 import "../styles/EditRecipePage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import { useForm } from "react-hook-form";
 
-export default function EditRecipePage() {
+const EditRecipePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -13,29 +14,26 @@ export default function EditRecipePage() {
     ingredients: "",
     instructions: "",
     time: "",
-    coverImage: "",
+    image: "",
+  });
+  const { register, handleSubmit } = useForm({
+    defaultValues: async () => {
+      const res = await fetchRecipeById(id);
+      return res.data;
+    },
   });
 
-  useEffect(() => {
-    fetchRecipeById(id)
-      .then((res) => setFormData(res.data.data))
-      .catch((err) => console.error("Error loading recipe:", err));
-  }, [id]);
+  const submitHandler = async (data) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("time", data.time);
+    formData.append("ingredients", data.ingredients);
+    formData.append("instructions", data.instructions);
+    formData.append("image", data.image[0]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateRecipe(id, formData)
-      .then(() => navigate(`/recipe/${id}`))
-      .catch((err) => alert("Update failed!"));
-  };
+    const res = await updateRecipe(id, formData);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData({ ...formData, coverImage: reader.result });
-    };
-    if (file) reader.readAsDataURL(file);
+    navigate(`/recipe/${id}`);
   };
 
   return (
@@ -45,7 +43,7 @@ export default function EditRecipePage() {
           <h2 className="mb-4 display-5 text-center">Edit Recipe</h2>
 
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(submitHandler)}
             className="card shadow-sm p-4 form-card"
           >
             {/* Title Field */}
@@ -55,10 +53,7 @@ export default function EditRecipePage() {
                 type="text"
                 className="form-control form-control-lg"
                 placeholder="Enter recipe title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
+                {...register("title")}
               />
             </div>
 
@@ -69,21 +64,10 @@ export default function EditRecipePage() {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleImageUpload}
                   className="form-control"
+                  {...register("image")}
                 />
               </div>
-              {formData.coverImage && (
-                <div className="mt-3 text-center image-preview">
-                  <img
-                    src={formData.coverImage}
-                    alt="Current recipe"
-                    className="img-fluid rounded shadow-sm"
-                    style={{ maxHeight: "200px" }}
-                  />
-                  <p className="text-muted small mt-2">Current Image Preview</p>
-                </div>
-              )}
             </div>
 
             {/* Ingredients Field */}
@@ -93,10 +77,7 @@ export default function EditRecipePage() {
                 className="form-control"
                 rows="4"
                 placeholder="List ingredients (separate with new lines)"
-                value={formData.ingredients}
-                onChange={(e) =>
-                  setFormData({ ...formData, ingredients: e.target.value })
-                }
+                {...register("ingredients")}
               />
             </div>
 
@@ -107,10 +88,7 @@ export default function EditRecipePage() {
                 className="form-control"
                 rows="6"
                 placeholder="Step-by-step instructions"
-                value={formData.instructions}
-                onChange={(e) =>
-                  setFormData({ ...formData, instructions: e.target.value })
-                }
+                {...register("instructions")}
               />
             </div>
 
@@ -123,10 +101,7 @@ export default function EditRecipePage() {
                 type="number"
                 className="form-control"
                 min="1"
-                value={formData.time}
-                onChange={(e) =>
-                  setFormData({ ...formData, time: e.target.value })
-                }
+                {...register("time")}
               />
             </div>
 
@@ -148,4 +123,6 @@ export default function EditRecipePage() {
       </div>
     </div>
   );
-}
+};
+
+export default EditRecipePage;

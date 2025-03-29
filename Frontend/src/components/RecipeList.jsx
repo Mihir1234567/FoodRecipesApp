@@ -3,6 +3,8 @@ import { RecipeCard } from "../components/RecipeCard";
 import "../styles/RecipeList.css";
 
 export const RecipeList = ({ recipes }) => {
+  // console.log(recipes);
+
   return (
     <div className="row g-4 recipe-list">
       {recipes.map((recipe) => (

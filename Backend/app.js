@@ -4,9 +4,11 @@ const path = require("path");
 const multer = require("multer");
 const cloudinaryUtil = require("./util/CloudinaryUtil");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const con = new Client({
   host: "localhost",
@@ -42,13 +44,13 @@ app.post("/addRecipe", upload, async (req, res) => {
 
   const { title, ingredients, instructions, time } = req.body;
 
-  const coverImage = cloudinaryResponse.secure_url;
+  const coverimage = cloudinaryResponse.secure_url;
 
-  const addQuery = `INSERT INTO recipes (title, ingredients, instructions, time, coverImage) VALUES($1,$2,$3,$4,$5)`;
+  const addQuery = `INSERT INTO recipes (title, ingredients, instructions, time, coverimage) VALUES($1,$2,$3,$4,$5)`;
 
   con.query(
     addQuery,
-    [title, ingredients, instructions, time, coverImage],
+    [title, ingredients, instructions, time, coverimage],
     async (err, result) => {
       if (err) {
         res.send(err.message);
@@ -63,7 +65,7 @@ app.post("/addRecipe", upload, async (req, res) => {
 app.get("/", async (req, res) => {
   con.query(`SELECT * FROM recipes`, async (err, result) => {
     if (err) {
-      res.send(err.message);
+      res.json({ message: err.message });
     } else {
       res.send(result.rows);
     }
@@ -77,7 +79,7 @@ app.get("/:id", async (req, res) => {
     if (err) {
       res.send(err.message);
     } else {
-      res.send(result.rows);
+      res.send(result.rows[0]);
     }
   });
 });
@@ -114,7 +116,7 @@ app.put("/updateRecipe/:id", upload, async (req, res) => {
       if (err) {
         res.send(err.message);
       } else {
-        res.send(result);
+        res.status(200).send(result);
       }
     }
   );
@@ -158,6 +160,74 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+/* ---------------------------------- Login --------------------------------- */
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Please Enter Both Email And Password",
+    });
+  }
+  try {
+    con.query(
+      'SELECT * FROM "user" WHERE email = $1',
+      [email],
+      async (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            message: err.message,
+          });
+        }
+
+        if (result.rows.length === 0) {
+          return res.status(400).json({
+            message: "User Not Found",
+          });
+        }
+
+        const user = result.rows[0];
+
+        const validPassword = bcrypt.compareSync(password, user.password);
+        if (!validPassword) {
+          return res.status(400).json({
+            message: "Invalid Credentials",
+          });
+        }
+        return res.status(200).json({
+          message: "Login Successful.",
+        });
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error.",
+      error: error.message,
+    });
+  }
+});
+
+/* ----------------------------- GetUserByEmail ----------------------------- */
+app.get("/getUserByEmail/:email", async (req, res) => {
+  const email = req.params.email;
+  console.log(email);
+
+  con.query(
+    'SELECT * FROM "user" WHERE email = $1',
+    [email],
+    async (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          message: err.message,
+        });
+      } else {
+        return res.status(200).json({
+          message: result.rows[0],
+        });
+      }
+    }
+  );
+});
 /* ------------------------------ Server Start ------------------------------ */
 const PORT = 3000;
 app.listen(PORT, async () => {

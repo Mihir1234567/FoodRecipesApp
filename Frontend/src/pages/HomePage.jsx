@@ -12,7 +12,10 @@ export const HomePage = () => {
   const fetchRecipes = async () => {
     try {
       const res = await fetchRecipe();
-      setRecipes(res.data.data);
+      setRecipes(res.data);
+      console.log(res.data);
+      console.log(recipes);
+      
     } catch (err) {
       console.error("Error fetching recipes:", err);
       setError("Failed to load recipes. Please try again later.");

@@ -14,7 +14,9 @@ export const RecipeDetailPage = () => {
   const fetchById = async () => {
     try {
       const res = await fetchRecipeById(id);
-      setRecipe(res.data.data);
+      setRecipe(res.data);
+      console.log(res.data);
+      
     } catch (error) {
       console.error("Error fetching recipe:", error);
     }
@@ -42,10 +44,10 @@ export const RecipeDetailPage = () => {
             <h1 className="display-4 mb-4 recipe-title border-bottom pb-3 border-primary">
               {recipe.title}
             </h1>
-            {recipe.coverImage && (
+            {recipe.coverimage && (
               <div className="mb-5 shadow-lg rounded-3 overflow-hidden recipe-cover-container">
                 <img
-                  src={recipe.coverImage}
+                  src={recipe.coverimage}
                   alt={recipe.title}
                   className="img-fluid recipe-cover-image"
                 />
