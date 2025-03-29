@@ -229,7 +229,8 @@ app.get("/getUserByEmail/:email", async (req, res) => {
   );
 });
 /* ------------------------------ Server Start ------------------------------ */
-const PORT = 3000;
-app.listen(PORT, async () => {
-  console.log(`Server is running on Port Number:- ${PORT}`);
-});
+// const PORT = 3000;
+// app.listen(PORT, async () => {
+//   console.log(`Server is running on Port Number:- ${PORT}`);
+// });
+module.exports = app;
